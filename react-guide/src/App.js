@@ -26,17 +26,13 @@ class App extends Component {
 
     const person = { ...this.state.persons[personIndex] };
 
-    person.name = event.target.value;
+    person.name = e.target.value;
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
     this.setState({
-      persons: [
-        { name: "Max", age: 18 },
-        { name: e.target.value, age: 19 },
-        { name: "Rachel", age: 19 }
-      ]
+      persons: persons
     })
   };
 
