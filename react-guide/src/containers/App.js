@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
-import './App.css';
-import Person from './Person/Person';
+
+import classes from './App.css';
+import Persons from '../Components/Persons/Persons';
+import Cockpit from '../Components/Cockpit/Cockpit';
+import ErrorBoundary from '../Components/ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
+  constructor (props) {
+    super(props)
+  }
+
+  shouldComponentUpdate (nextProps, NextState) {
+    return true;
+  }
+
   state = {
     persons: [
       { id: 1, name: "Max", age: 18 },
@@ -44,53 +55,25 @@ class App extends Component {
   };
 
   render() {
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
 
     let persons = null;
 
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <Person
-              click={() => this.deletePersonHandler(index)}
-              name={person.name}
-              age={person.age}
-              key={person.id}
-              changed={(event) => this.nameChangedHandler(event, person.id)}
-            />
-          })}
-        </div>
-      );
-
-      style.backgroundColor = 'red';
-
-    }
-
-    const cssClasses = [];
-    if (this.state.persons.length <= 2) {
-      cssClasses.push('red');
-    }
-    if (this.state.persons.length <= 1) {
-      cssClasses.push('bold');
+      persons =  <Persons
+            persons = {this.state.persons}
+            clicked = {this.deletePersonHandler}
+            changed = {this.nameChangedHandler}/>
     }
 
     return (
-      <div className="App">
-        <h1>Hello, Ololo!</h1>
-        <p className={cssClasses.join(' ')}>How bout this</p>
-        <button
-          onClick={this.togglePersonsHandler}
-          style={style}>
-          Toggle persons
-        </button>
+      <div className={classes.App}>
+        <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
+        <Cockpit
+          appTitle={this.props.title}
+          showPersons = {this.state.showPersons}
+          persons = {this.state.persons}
+          clicked = {this.togglePersonsHandler}
+        />
         {persons}
       </div>
     );
